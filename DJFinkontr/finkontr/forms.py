@@ -55,6 +55,7 @@ class ManyFieldsFormWidget(forms.Form):
 class ImageForm(forms.Form):
      image = forms.ImageField()
 
+
 # из домашнего задания
 
 class ProductForm(forms.Form):
@@ -73,5 +74,9 @@ class ProductForm(forms.Form):
 
 class ProductFormUpdate(ProductForm):
     products = forms.ModelChoiceField(label='Продукты', queryset=Product.objects.all())
+
+
+
+
 
 
