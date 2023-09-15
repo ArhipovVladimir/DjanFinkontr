@@ -1,19 +1,23 @@
 from django.db import models
 
 
-class User(models.Model):
-    name = models.CharField(max_length=100)
-    email = models.EmailField()
-    password = models.CharField(max_length=100)
-    age = models.IntegerField()
-
-    def __str__(self):
-        return f'Username: {self.name}, email: {self.email}, age:{self.age}'
+# class User(models.Model):
+#     name = models.CharField(max_length=100)
+#     email = models.EmailField()
+#     password = models.CharField(max_length=100)
+#     age = models.IntegerField()
+#
+#     def __str__(self):
+#         return f'Username: {self.name}, email: {self.email}, age:{self.age}'
 
 
 # Процессы
 class Process(models.Model):
-    name = models.CharField(max_length=5)
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return f'Username: {self.name}'
+
 
 # Процессы
 # prs = sqlalchemy.Table(
@@ -28,6 +32,8 @@ class Operation(models.Model):
     name = models.CharField(max_length=100)
     process = models.ForeignKey(Process, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return f'Username: {self.name}'
 
 # # Операции
 # operation = sqlalchemy.Table(
@@ -39,9 +45,13 @@ class Operation(models.Model):
 #
 # )
 
+
 # долженность работника
 class Employ_position (models.Model):
-    mane = models.CharField(max_length=100)
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return f'Username: {self.name}'
 
 # # должность работника
 # employ_position = sqlalchemy.Table(
@@ -59,6 +69,10 @@ class Worker(models.Model):
     surname = models.CharField(max_length=100)
     employ_position = models.ForeignKey(Employ_position, on_delete=models.CASCADE)
 
+
+    def __str__(self):
+        return f'Username: {self.name}, Emp_posit: {self.employ_position}'
+
 # # работник
 # worker = sqlalchemy.Table(
 #     "worker",
@@ -75,6 +89,9 @@ class Worker(models.Model):
 class Control_action(models.Model):
     name = models.CharField(max_length=100)
 
+    def __str__(self):
+        return f'Username: {self.name}'
+
 
 # # конрольное действие
 # control_action = sqlalchemy.Table(
@@ -88,6 +105,10 @@ class Control_action(models.Model):
 #    Метод контроля
 class Method(models.Model):
     name = models.CharField(max_length=100)
+
+
+    def __str__(self):
+        return f'Username: {self.name}'
 
 
 # # метод котроля
@@ -104,6 +125,10 @@ class Method(models.Model):
 class Certificate_of_violations(models.Model):
     date = models.DateField(auto_now_add=True)
     worker = models.ForeignKey(Worker, on_delete=models.CASCADE)
+
+
+    def __str__(self):
+        return f'Worker: {self.worker}, date {self.date}'
 
 
 # # Справка о нарушении
@@ -125,6 +150,9 @@ class Reestr(models.Model):
     control_action = models.ForeignKey(Control_action, on_delete=models.CASCADE)
     method = models.ForeignKey(Method, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return f'code: {self.code} oretation: {self.operation} worker: {self.worker}, contr_action{self.control_action}'
+
 # Реестр
 # reestr = sqlalchemy.Table(
 #     "reestr",
@@ -145,6 +173,9 @@ class Violation(models.Model):
      employ_position = models.ForeignKey(Employ_position, on_delete=models.CASCADE)
      worker = models.ForeignKey(Worker, on_delete=models.CASCADE)
      amount = models.FloatField(max_length=256)
+
+     def __str__(self):
+         return f'cert_viol: {self.certificate_of_violations}, reestre{self.reestr} title {self.title}, worker {self.worker}'
 
 #
 # # Строка в справке о нарушениях
@@ -168,6 +199,9 @@ class Journal(models.Model):
     violation = models.ForeignKey(Violation, on_delete=models.CASCADE)
     measures = models.TextField(max_length=256)
 
+    def __str__(self):
+        return f'date: {self.date}, volation{self.violation} measurse{self.measures}'
+
 # # Журнал
 # journal = sqlalchemy.Table(
 #     "journal",
@@ -180,37 +214,37 @@ class Journal(models.Model):
 # )
 #
 
+#
+# class Product(models.Model):
+#     name = models.CharField(max_length=100)
+#     price = models.DecimalField(max_digits=8, decimal_places=2)
+#     description = models.TextField()
+#     image = models.ImageField(upload_to='products/')
+#
+#
+# class Order(models.Model):
+#     customer = models.ForeignKey(User, on_delete=models.CASCADE)
+#     products = models.ManyToManyField(Product)
+#     date_ordered = models.DateTimeField(auto_now_add=True)
+#     total_price = models.DecimalField(max_digits=8, decimal_places=2)
+#
+#
+# class Author(models.Model):
+#     name = models.CharField(max_length=100)
+#     email = models.EmailField()
+#
+#     def __str__(self):
+#         return f'Name: {self.name}, email: {self.email}'
 
-class Product(models.Model):
-    name = models.CharField(max_length=100)
-    price = models.DecimalField(max_digits=8, decimal_places=2)
-    description = models.TextField()
-    image = models.ImageField(upload_to='products/')
-
-
-class Order(models.Model):
-    customer = models.ForeignKey(User, on_delete=models.CASCADE)
-    products = models.ManyToManyField(Product)
-    date_ordered = models.DateTimeField(auto_now_add=True)
-    total_price = models.DecimalField(max_digits=8, decimal_places=2)
-
-
-class Author(models.Model):
-    name = models.CharField(max_length=100)
-    email = models.EmailField()
-
-    def __str__(self):
-        return f'Name: {self.name}, email: {self.email}'
-
-
-class Post(models.Model):
-    title = models.CharField(max_length=100)
-    content = models.TextField()
-    author = models.ForeignKey(Author, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return f'Title is {self.title}'
-
-    def get_summary(self):
-        words = self.content.split()
-        return f'{" ".join(words[:8])}...'
+#
+# class Post(models.Model):
+#     title = models.CharField(max_length=100)
+#     content = models.TextField()
+#     author = models.ForeignKey(Author, on_delete=models.CASCADE)
+#
+#     def __str__(self):
+#         return f'Title is {self.title}'
+#
+#     def get_summary(self):
+#         words = self.content.split()
+#         return f'{" ".join(words[:8])}...'

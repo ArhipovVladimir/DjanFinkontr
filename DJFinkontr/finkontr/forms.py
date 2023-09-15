@@ -1,5 +1,6 @@
 from django import forms
 import datetime
+from models import *
 
 
 class UserForm(forms.Form):
@@ -31,6 +32,19 @@ class ManyFieldsForm(forms.Form):
     is_active = forms.BooleanField(required=False)
     birthdate = forms.DateField(initial=datetime.date.today)
     gender = forms.ChoiceField(choices=[('M', 'Male'), ('F', 'Female')])
+
+
+class ProcessForm(forms.Form):
+    name = forms.CharField(max_length=50,
+                           widget=forms.TextInput(attrs={'class': 'form-control',
+                                                         'placeholder': 'Введите  наименование процесса'}))
+
+
+class OperatinForm(forms.Form):
+    name = forms.CharField(max_length=50,
+                           widget=forms.TextInput(attrs={'class': 'form-control',
+                                                         'placeholder': 'Введите  наименование операции'}))
+    process = forms.ModelChoiceField(label='процессы', queryset=models.Process.objects.all())
 
 
 class ManyFieldsFormWidget(forms.Form):
@@ -72,8 +86,8 @@ class ProductForm(forms.Form):
     image = forms.ImageField()
 
 
-class ProductFormUpdate(ProductForm):
-    products = forms.ModelChoiceField(label='Продукты', queryset=Product.objects.all())
+# class ProductFormUpdate(ProductForm):
+#     products = forms.ModelChoiceField(label='Продукты', queryset=Product.objects.all())
 
 
 
